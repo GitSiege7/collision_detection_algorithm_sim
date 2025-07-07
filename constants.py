@@ -1,4 +1,6 @@
+import pygame
+
 SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 900
-GRAVITY = 10
-ELASTICITY = 0.8
+GRAVITY = pygame.Vector2(0, 1)
+ELASTICITY = 0.9

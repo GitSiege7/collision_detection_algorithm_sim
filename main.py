@@ -12,13 +12,18 @@ def main():
     
     updatables = pygame.sprite.Group()
     drawables = pygame.sprite.Group()
+    balls = pygame.sprite.Group()
 
     gravity = GRAVITY_DOWN
 
-    Ball.containers = (updatables, drawables)
+    Ball.containers = (updatables, drawables, balls)
 
-    for i in range(0, COUNT):
-        ball = Ball("blue", pygame.Vector2(random.randint(math.floor(SCREEN_WIDTH//4), math.floor(SCREEN_WIDTH/1.5)), random.randint(math.floor(SCREEN_HEIGHT//4), math.floor(SCREEN_HEIGHT/1.5))), pygame.Vector2(0, 0))
+    count = 0
+    for i in range(math.floor(SCREEN_HEIGHT/4), math.floor(SCREEN_HEIGHT/1.5), 2 * RADIUS):
+        for j in range(math.floor(SCREEN_WIDTH/4), math.floor(SCREEN_WIDTH/1.5), 2 * RADIUS):
+            if count < COUNT:
+                Ball("blue", pygame.Vector2(j, i), pygame.Vector2(0, 0))
+                count += 1
 
     while True:
         for event in pygame.event.get():
@@ -36,13 +41,11 @@ def main():
             gravity = GRAVITY_LEFT
         elif keys[pygame.K_RIGHT]:
             gravity = GRAVITY_RIGHT
-        elif keys[pygame.K_SPACE]:
-            ball = Ball("blue", pygame.Vector2(RADIUS, SCREEN_HEIGHT/4), pygame.Vector2(50, 0))
 
         screen.fill("black")
 
         for updatable in updatables:
-            updatable.update(gravity)
+            updatable.update(gravity, balls)
 
         for drawable in drawables:
             drawable.draw(screen)

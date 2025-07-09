@@ -1,5 +1,6 @@
 from constants import *
 import math
+import threading
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self, color, pos, vel):
@@ -16,38 +17,72 @@ class Ball(pygame.sprite.Sprite):
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, self.pos, self.radius)
         
-    def update(self, gravity):
-        #X BOUNDARY
+    def update(self, gravity, balls):
+        #CHECK X BOUNDARIES
         if self.pos.x + self.radius >= SCREEN_WIDTH:
             self.pos.x = SCREEN_WIDTH - self.radius
-            self.vel.x *= -1 * ELASTICITY
-            self.vel.x += gravity.x
+            self.vel.x *= -ELASTICITY
         elif self.pos.x - self.radius <= 0:
             self.pos.x = self.radius
-            self.vel.x *= -1 * ELASTICITY
-            self.vel.x += gravity.x
-        else:
-            self.vel.x += gravity.x
+            self.vel.x *= -ELASTICITY
 
-        self.vel.x *= AIR_REST
-
-        #Y BOUNDARY
+        #CHECK Y BOUNDARIES
         if self.pos.y + self.radius >= SCREEN_HEIGHT:
             self.pos.y = SCREEN_HEIGHT - self.radius
-            self.vel.y *= -1 * ELASTICITY
-            self.vel.y += gravity.y
+            self.vel.y *= -ELASTICITY
         elif self.pos.y - self.radius <= 0:
             self.pos.y = self.radius
-            self.vel.y *= -1 * ELASTICITY
-            self.vel.y += gravity.y
-        else:
-            self.vel.y += gravity.y
+            self.vel.y *= -ELASTICITY
 
-        self.vel.y *= AIR_REST
+        #APPLY AIR RESISTANCE & GRAVITY
+        self.vel.x *= AIR_RES
+        self.vel.y *= AIR_RES
+        self.vel.x += gravity.x
+        self.vel.y += gravity.y
 
+        visited = []
+        #COLLISION & REPULSION
+        for other in balls:
+            #DON'T CHECK CONDITION AGAINST SELF
+            if other == self or other in visited:
+                continue
+            
+            dist = pygame.Vector2.distance_to(self.pos, other.pos)
+            if dist <= self.radius * 2:
+                dist_v = other.pos - self.pos
+                normal = dist_v.normalize()
+                tangent = pygame.Vector2(-normal.y, normal.x)
+
+                v1n = normal.dot(self.vel)
+                v1t = tangent.dot(self.vel)
+                v2n = normal.dot(other.vel)
+                v2t = tangent.dot(other.vel)
+
+                v1n_after = v2n
+                v2n_after = v1n
+
+                v1_after = v1n_after * normal + v1t * tangent
+                v2_after = v2n_after * normal + v2t * tangent
+
+                self.vel = v1_after
+                other.vel = v2_after
+
+                #OVERLAP RESOLUTION
+                overlap = self.radius * 2 - dist
+                if overlap > 0:
+                    correction = normal * (overlap / 2)
+                    self.pos -= correction
+                    other.pos += correction
+
+
+            visited.append(other)
+
+
+        #UPDATE POS
         self.pos += self.vel
 
-        self.color = self.get_color()
+        #UPDATE COLOR
+        #self.color = self.get_color()
 
 
     def get_color(self):

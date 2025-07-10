@@ -17,12 +17,12 @@ class Ball(pygame.sprite.Sprite):
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, self.pos, self.radius)
         
-    def update(self, gravity):
+    def update(self, gravity, dt):
         #CHECK SCREEN BOUND COLLISIONS
-        self.check_bounds(gravity)
+        self.check_bounds(gravity, dt)
 
         #UPDATE POS
-        self.update_pos()
+        self.update_pos(dt)
 
         #UPDATE COLOR
         self.update_color()
@@ -34,6 +34,9 @@ class Ball(pygame.sprite.Sprite):
             
         dist = pygame.Vector2.distance_to(self.pos, other.pos)
         if dist <= self.radius * 2:
+            if dist == 0:
+                self.pos.x += 5
+            
             dist_v = other.pos - self.pos
             normal = dist_v.normalize()
             tangent = pygame.Vector2(-normal.y, normal.x)
@@ -60,7 +63,7 @@ class Ball(pygame.sprite.Sprite):
                 other.pos += correction
 
 
-    def check_bounds(self, gravity):
+    def check_bounds(self, gravity, dt):
         #CHECK X BOUNDARIES
         if self.pos.x + self.radius >= SCREEN_WIDTH:
             self.pos.x = SCREEN_WIDTH - self.radius
@@ -78,42 +81,42 @@ class Ball(pygame.sprite.Sprite):
             self.vel.y *= -ELASTICITY
 
         #APPLY AIR RESISTANCE & GRAVITY
-        self.vel.x *= AIR_RES
-        self.vel.y *= AIR_RES
-        self.vel.x += gravity.x
-        self.vel.y += gravity.y
+        self.vel.x *= AIR_RES ** dt
+        self.vel.y *= AIR_RES ** dt
+        self.vel.x += gravity.x * dt
+        self.vel.y += gravity.y * dt
 
 
-    def update_pos(self):
-        self.pos += self.vel
+    def update_pos(self, dt):
+        self.pos += self.vel * dt
 
 
     def update_color(self):
         velocity = math.sqrt(pow(self.vel.x, 2) + pow(self.vel.y, 2))
         
-        if (velocity > 60):
+        if (velocity > 600):
             self.color = (175, 175, 255)
-        elif (velocity > 55):
+        elif (velocity > 550):
             self.color = (160, 160, 255)
-        elif (velocity > 50):
+        elif (velocity > 500):
             self.color = (145, 145, 255)
-        elif (velocity > 45):
+        elif (velocity > 450):
             self.color = (130, 100, 255)
-        elif (velocity > 40):
+        elif (velocity > 400):
             self.color = (115, 115, 255)
-        elif (velocity > 35):
+        elif (velocity > 350):
             self.color = (100, 100, 255)
-        elif (velocity > 30):
+        elif (velocity > 300):
             self.color = (85, 85, 255)
-        elif (velocity > 25):
+        elif (velocity > 250):
             self.color = (70, 70, 255)
-        elif (velocity > 20):
+        elif (velocity > 200):
             self.color = (55, 55, 255)
-        elif (velocity > 15):
+        elif (velocity > 150):
             self.color = (40, 40, 255)
-        elif (velocity > 10):
+        elif (velocity > 100):
             self.color = (25, 25, 255)
-        elif (velocity > 5):
+        elif (velocity > 50):
             self.color = (10, 10, 255)
         else:
             self.color = (0, 0, 255)

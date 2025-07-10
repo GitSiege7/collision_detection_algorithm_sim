@@ -16,6 +16,8 @@ def main():
 
     gravity = GRAVITY_DOWN
 
+    dt = 0
+
     Ball.containers = (updatables, drawables, balls)
 
     count = 0
@@ -26,6 +28,8 @@ def main():
                 count += 1
 
     while True:
+        dt = clock.tick(60)/1000
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -41,15 +45,16 @@ def main():
             gravity = GRAVITY_LEFT
         elif keys[pygame.K_RIGHT]:
             gravity = GRAVITY_RIGHT
-        elif keys[pygame.K_SPACE]:
+        elif keys[pygame. K_SPACE]:
             gravity = ZERO
 
-        # grid = gridform(balls)
         for _ in range(SUBSTEPS):
             sweep = sweep_and_prune(balls)
 
+            subdt = dt / SUBSTEPS
+
             for updatable in updatables:
-                updatable.update(gravity)
+                updatable.update(gravity, subdt)
 
             update(sweep)
 
@@ -58,7 +63,6 @@ def main():
             drawable.draw(screen)
 
         pygame.display.flip()
-        clock.tick(60)
 
 if __name__ == "__main__":
     main()

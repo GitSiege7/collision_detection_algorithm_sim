@@ -46,8 +46,10 @@ def main():
 
         screen.fill("black")
 
+        sweep = sweep_and_prune(balls)
+
         for updatable in updatables:
-            updatable.update(gravity, balls)
+            updatable.update(gravity, sweep)
 
         for drawable in drawables:
             drawable.draw(screen)

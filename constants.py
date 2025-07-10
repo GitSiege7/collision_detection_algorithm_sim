@@ -9,5 +9,5 @@ GRAVITY_RIGHT = pygame.Vector2(1, 0)
 ZERO = pygame.Vector2(0, 0)
 ELASTICITY = 0.7
 AIR_RES = 0.985
-RADIUS = 30
-COUNT = 50
+RADIUS = 8
+COUNT = 200

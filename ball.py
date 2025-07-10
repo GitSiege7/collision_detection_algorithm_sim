@@ -17,32 +17,9 @@ class Ball(pygame.sprite.Sprite):
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, self.pos, self.radius)
         
-    def update(self, gravity, balls):
-        
+    def update(self, gravity, sweep):
         #CHECK SCREEN BOUNDS
         self.check_bounds(gravity)
-
-        #SWEEP AND PRUNE
-        balls_sorted = sorted(balls, key=lambda ball: ball.pos.x)
-        
-        sweep = [[]]
-        sweep_i = 0
-        for i in range(0, len(balls_sorted)):
-            j = i + 1
-
-            for j in range(i + 1, len(balls_sorted)):
-                if (balls_sorted[j].pos.x - self.radius) < (balls_sorted[i].pos.x + self.radius):
-                    if balls_sorted[i] not in sweep[sweep_i]:
-                        sweep[sweep_i] = [balls_sorted[i], balls_sorted[j]]
-                        i += 1
-                        j += 1
-                    else:
-                        sweep[sweep_i].append(balls_sorted[j])
-            sweep_i += 1
-            i = j + 1
-
-            sweep.append([])
-
 
         #COLLISION CHECK AND RESOLUTION
         for list in sweep:
@@ -149,3 +126,27 @@ class Ball(pygame.sprite.Sprite):
             self.color = (0, 0, 255)
 
         return
+
+
+def sweep_and_prune(balls):
+    balls_sorted = sorted(balls, key=lambda ball: ball.pos.x)
+    
+    sweep = [[]]
+    sweep_i = 0
+    for i in range(0, len(balls_sorted)):
+        j = i + 1
+
+        for j in range(i + 1, len(balls_sorted)):
+            if (balls_sorted[j].pos.x - RADIUS) < (balls_sorted[i].pos.x + RADIUS):
+                if balls_sorted[i] not in sweep[sweep_i]:
+                    sweep[sweep_i] = [balls_sorted[i], balls_sorted[j]]
+                    i += 1
+                    j += 1
+                else:
+                    sweep[sweep_i].append(balls_sorted[j])
+        sweep_i += 1
+        i = j + 1
+
+        sweep.append([])
+
+    return sweep

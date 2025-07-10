@@ -25,7 +25,7 @@ class Ball(pygame.sprite.Sprite):
         self.update_pos(dt)
 
         #UPDATE COLOR
-        self.update_color()
+        #self.update_color()
 
 
     def collision(self, other):
@@ -35,7 +35,7 @@ class Ball(pygame.sprite.Sprite):
         dist = pygame.Vector2.distance_to(self.pos, other.pos)
         if dist <= self.radius * 2:
             if dist == 0:
-                self.pos.x += 5
+                self.pos.x += RADIUS
             
             dist_v = other.pos - self.pos
             normal = dist_v.normalize()
@@ -124,12 +124,24 @@ class Ball(pygame.sprite.Sprite):
         return
 
 
-def update(sweep):
-    #COLLISION CHECK AND RESOLUTION
-    for list in sweep:
-        for i in range (0, len(list)):
-            for j in range(i, len(list)):
-                list[i].collision(list[j])
+def update(grid):
+    offsets = [
+        (-1, -1), (-1, 0), (-1, 1),
+        ( 0, -1), (0, 0),  ( 0, 1),
+        ( 1, -1), ( 1, 0), ( 1, 1)
+    ]
+    
+    for i in range(MATRIX_HEIGHT):
+        for j in range(MATRIX_WIDTH):
+            if not grid[i][j]:
+                continue
+            
+            for ball in grid[i][j]:
+                for di, dj in offsets:
+                    ni, nj = i + di, j + dj
+                    if 0 <= ni < MATRIX_HEIGHT and 0 <= nj < MATRIX_WIDTH:
+                        for other in grid[ni][nj]:
+                            ball.collision(other)
 
 
 def sweep_and_prune(balls):
@@ -158,14 +170,11 @@ def sweep_and_prune(balls):
 
 def gridform(balls):
     #X == COLUMN (2ND INDX), Y == ROW (1ST INDX)
-    grid = EMPTY_MATRIX
+    grid = [[[] for j in range(MATRIX_WIDTH)] for i in range(MATRIX_HEIGHT)]
 
     for ball in balls:
-        x = math.floor(ball.pos.x / 10)
-        y = math.floor(ball.pos.y / 10)
-
+        x = min(MATRIX_WIDTH - 1, max(0, int(ball.pos.x / (SCREEN_WIDTH / MATRIX_WIDTH))))
+        y = min(MATRIX_HEIGHT - 1, max(0, int(ball.pos.y / (SCREEN_HEIGHT / MATRIX_HEIGHT))))
         grid[y][x].append(ball)
     
-    print(grid)
-
     return grid

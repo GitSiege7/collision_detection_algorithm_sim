@@ -21,14 +21,13 @@ def main():
     Ball.containers = (updatables, drawables, balls)
 
     count = 0
-    for i in range(math.floor(SCREEN_HEIGHT/4), math.floor(SCREEN_HEIGHT/1.5), 3 * RADIUS):
-        for j in range(math.floor(SCREEN_WIDTH/4), math.floor(SCREEN_WIDTH/1.5), 3 * RADIUS):
+    for i in range(RADIUS, SCREEN_HEIGHT - RADIUS, 3 * RADIUS):
+        for j in range(RADIUS, SCREEN_WIDTH - RADIUS, 3 * RADIUS):
             if count < COUNT:
-                Ball("blue", pygame.Vector2(j, i), pygame.Vector2(0, 0))
+                Ball("red", pygame.Vector2(j, i), pygame.Vector2(0, 0))
                 count += 1
 
     while True:
-        dt = clock.tick(60)/1000
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -49,20 +48,23 @@ def main():
             gravity = ZERO
 
         for _ in range(SUBSTEPS):
-            sweep = sweep_and_prune(balls)
+            grid = gridform(balls)
 
             subdt = dt / SUBSTEPS
 
             for updatable in updatables:
                 updatable.update(gravity, subdt)
 
-            update(sweep)
+            update(grid)
 
         screen.fill("black")
         for drawable in drawables:
             drawable.draw(screen)
 
         pygame.display.flip()
+
+        dt = clock.tick(60)/1000
+
 
 if __name__ == "__main__":
     main()

@@ -19,8 +19,8 @@ def main():
     Ball.containers = (updatables, drawables, balls)
 
     count = 0
-    for i in range(math.floor(SCREEN_HEIGHT/4), math.floor(SCREEN_HEIGHT/1.5), 2 * RADIUS):
-        for j in range(math.floor(SCREEN_WIDTH/4), math.floor(SCREEN_WIDTH/1.5), 2 * RADIUS):
+    for i in range(math.floor(SCREEN_HEIGHT/4), math.floor(SCREEN_HEIGHT/1.5), 3 * RADIUS):
+        for j in range(math.floor(SCREEN_WIDTH/4), math.floor(SCREEN_WIDTH/1.5), 3 * RADIUS):
             if count < COUNT:
                 Ball("blue", pygame.Vector2(j, i), pygame.Vector2(0, 0))
                 count += 1
@@ -41,6 +41,8 @@ def main():
             gravity = GRAVITY_LEFT
         elif keys[pygame.K_RIGHT]:
             gravity = GRAVITY_RIGHT
+        elif keys[pygame.K_SPACE]:
+            gravity = ZERO
 
         screen.fill("black")
 

@@ -44,13 +44,16 @@ def main():
         elif keys[pygame.K_SPACE]:
             gravity = ZERO
 
+        # grid = gridform(balls)
+        for _ in range(SUBSTEPS):
+            sweep = sweep_and_prune(balls)
+
+            for updatable in updatables:
+                updatable.update(gravity)
+
+            update(sweep)
+
         screen.fill("black")
-
-        sweep = sweep_and_prune(balls)
-
-        for updatable in updatables:
-            updatable.update(gravity, sweep)
-
         for drawable in drawables:
             drawable.draw(screen)
 

@@ -17,16 +17,9 @@ class Ball(pygame.sprite.Sprite):
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, self.pos, self.radius)
         
-    def update(self, gravity, sweep):
-        #CHECK SCREEN BOUNDS
+    def update(self, gravity):
+        #CHECK SCREEN BOUND COLLISIONS
         self.check_bounds(gravity)
-
-        #COLLISION CHECK AND RESOLUTION
-        for list in sweep:
-            for i in range (0, len(list)):
-                for j in range(i, len(list)):
-                    list[i].collision(list[j])
-
 
         #UPDATE POS
         self.update_pos()
@@ -128,6 +121,14 @@ class Ball(pygame.sprite.Sprite):
         return
 
 
+def update(sweep):
+    #COLLISION CHECK AND RESOLUTION
+    for list in sweep:
+        for i in range (0, len(list)):
+            for j in range(i, len(list)):
+                list[i].collision(list[j])
+
+
 def sweep_and_prune(balls):
     balls_sorted = sorted(balls, key=lambda ball: ball.pos.x)
     
@@ -150,3 +151,18 @@ def sweep_and_prune(balls):
         sweep.append([])
 
     return sweep
+
+
+def gridform(balls):
+    #X == COLUMN (2ND INDX), Y == ROW (1ST INDX)
+    grid = EMPTY_MATRIX
+
+    for ball in balls:
+        x = math.floor(ball.pos.x / 10)
+        y = math.floor(ball.pos.y / 10)
+
+        grid[y][x].append(ball)
+    
+    print(grid)
+
+    return grid

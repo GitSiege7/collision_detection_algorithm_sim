@@ -25,13 +25,13 @@ class Ball(pygame.sprite.Sprite):
         self.update_pos(dt)
 
         #UPDATE COLOR
-        #self.update_color()
+        self.update_color()
 
 
     def collision(self, other):
         if other == self:
             return
-            
+        
         dist = pygame.Vector2.distance_to(self.pos, other.pos)
         if dist <= self.radius * 2:
             if dist == 0:
@@ -124,7 +124,8 @@ class Ball(pygame.sprite.Sprite):
         return
 
 
-def update(grid):
+#COLLISION DETECTION USING SPACIAL PARTITIONING
+def grid_update(grid):
     offsets = [
         (-1, -1), (-1, 0), (-1, 1),
         ( 0, -1), (0, 0),  ( 0, 1),
@@ -144,6 +145,22 @@ def update(grid):
                             ball.collision(other)
 
 
+#COLLISION DETECTION USING SWEEP AND PRUNE ALGORITHM
+def sweep_update(sweep):
+    for list in sweep:
+        for i in range (0, len(list)):
+            for j in range(i, len(list)):
+                list[i].collision(list[j])
+
+
+#BRUTE FORCE COLLISION DETETCTION
+def brute_update(balls):
+    for ball in balls:
+        for other in balls:
+            ball.collision(other)
+
+
+#NOT IN USE IN CODE, OLD COLLISION DETECTION ALGORITHM
 def sweep_and_prune(balls):
     balls_sorted = sorted(balls, key=lambda ball: ball.pos.x)
     
@@ -167,7 +184,7 @@ def sweep_and_prune(balls):
 
     return sweep
 
-
+#NEW COLLISION DETECTION METHOD USING SPACIAL PARTITIONING
 def gridform(balls):
     #X == COLUMN (2ND INDX), Y == ROW (1ST INDX)
     grid = [[[] for j in range(MATRIX_WIDTH)] for i in range(MATRIX_HEIGHT)]

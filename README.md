@@ -56,3 +56,14 @@ Naturally, it does have limitations, and can slow down with more bodies and high
 The average time complexity for space partitioning is **O(n)** assuming evenly distributed particles. 
 
 It is also worth noting the memory complexity, as the grid is stored as a list[of lists[of lists[]]]. My implementation creates grids 10px, meaning 160x90 lists, or 14,400 lists, and relatively little of that space is actually used.
+
+## Cloning & Requirements
+### Requirements
+- [Python3](python.org)
+- [pygame](https://www.pygame.org/wiki/GettingStarted) 2.6.1 or newer
+- [uv](https://github.com/astral-sh/uv)
+
+### Cloning
+```
+
+

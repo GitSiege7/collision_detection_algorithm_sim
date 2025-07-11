@@ -12,7 +12,7 @@ This algorithm works well with small numbers of bodies and is very easy to imple
 You'll notice when using this algorithm that it is slow... but it is consistent. Due to it's simplicity and independence from partitioning tricks (more on those in the next algorithm), this algorithm performs relatively similar whether the bodies are dense and in close proximity, or spread across the screen evenly.
 
 #### Time Complexity
-This implementation has a time complexity of *O(n^2)*, given that n is the number of bodies in the simulation.
+This implementation has a time complexity of **O(n^2)**, given that n is the number of bodies in the simulation.
 
 
 ### Sweep & Prune (S&P)
@@ -33,7 +33,7 @@ Beyond a certain distance, we can guarantee that two bodies will not collide bec
 #### Algorithm Explanation
 
 
-####Observations
+#### Observations
 
 
-####Time Complexity
+#### Time Complexity

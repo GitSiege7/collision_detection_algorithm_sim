@@ -5,11 +5,11 @@ An interactive minimal particle simulation that displays the differences in perf
 I recommend reading through each one of these explanations about the algorithms before attempting to observe them as you will be able to better see their differences.
 
 #### Controls
-1 - activates B-F algorithm
-2 - activates S&P algorithm
-3 - activates GRID algorithm
-ARROW KEYS - changes the direction of simulated gravity (default: down)
-SPACE - turns off simulated gravity
+- 1 - activates B-F algorithm
+- 2 - activates S&P algorithm
+- 3 - activates GRID algorithm
+- ARROW KEYS - changes the direction of simulated gravity (default: down)
+- SPACE - turns off simulated gravity
 
 ## Three Algorithms
 ### Brute Force (B-F) (default)

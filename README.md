@@ -64,6 +64,13 @@ It is also worth noting the memory complexity, as the grid is stored as a list[o
 - [uv](https://github.com/astral-sh/uv)
 
 ### Cloning
+To clone:
+```
+git clone https://github.com/GitSiege7/collision_detection_algorithm_sim
+cd collision_detection_algorithm_sim
 ```
 
-
+To run:
+```
+./run.sh
+```

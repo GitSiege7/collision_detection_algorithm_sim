@@ -40,7 +40,7 @@ For a disperse, even field of particles, there are noticeable performance increa
 #### Time Complexity
 The time complexity of the sweep and prune algorithm is typically around **O(nlog(n))**, but tanks to **O(n^2)** in the case discussed in the observations section.
 
-![comparison](https://packaged-media.redd.it/iejjo32xrvgb1/pb/m2-res_266p.mp4?m=DASHPlaylist.mpd&v=1&e=1752346800&s=bb442c8444a74993ae54de8ca67943ec23e37d8c#t=7.475579)
+![comparison](./comparison.mp4)
 
 ### Grid Space Partitioning (GRID)
 #### Algorithm Explanation

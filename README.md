@@ -6,7 +6,7 @@ I recommend reading through each one of these explanations about the algorithms 
 
 #### Controls
 - 0 - toggles HUD (in case you just wanna watch the pretty colors)
-- 1 - activates B-F algorithm
+- 1 - activates B-F algorithm (default)
 - 2 - activates S&P algorithm
 - 3 - activates GRID algorithm
 - ARROW KEYS - changes the direction of simulated gravity (default: down)
